@@ -54,12 +54,28 @@ class ResponsesComponent
         $status = 200;
 
         $body = [
-            'status_code' => 200,
+            'status_code' => $status,
             'message_id' => 'SUCCESS',
             'message' => 'Success'
         ];
         // Add data response if exist
         $body = empty($entity) ? $body : array_merge($body, ['data' => $entity]);
+
+        return $this->_setResponseBody($body, $status);
+    }
+
+    /**
+     * notFound
+     */
+    public function notFound()
+    {
+        $status = 404;
+
+        $body = [
+            'status_code' => $status,
+            'message_id' => 'NOT_FOUND',
+            'message' => 'Not Found'
+        ];
 
         return $this->_setResponseBody($body, $status);
     }

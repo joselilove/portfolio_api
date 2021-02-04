@@ -15,6 +15,7 @@ class ApiToken
     {
         $this->ResponseComponent = new ResponsesComponent();
     }
+
     /**
      * Handle an incoming request.
      *
@@ -24,10 +25,16 @@ class ApiToken
      */
     public function handle(Request $request, Closure $next)
     {
+        $response = $next($request);
+        // If getting a new token
+        if ($request->isMethod('get') &&  request()->route()->uri == 'api/portfolio/token') {
+            return $response;
+        }
+        // return error 401 if invalid token
         if (!Hash::check(config('const.API-TOKEN'), $request->Header('API-KEY'))) {
-            return $this->ResponseComponent->success();
+            return $this->ResponseComponent->authenticationFailed();
         }
 
-        return $next($request);
+        return $response;
     }
 }

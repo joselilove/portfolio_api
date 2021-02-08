@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Component\ResponsesComponent;
+use App\Http\Form\CustomValidator;
 
 class PortfolioController extends Controller
 {
     protected $ResponseComponent;
+    protected $CustomValidator;
 
     /**
      * __construct
@@ -16,6 +18,7 @@ class PortfolioController extends Controller
     public function __construct()
     {
         $this->ResponseComponent = new ResponsesComponent();
+        $this->CustomValidator = new CustomValidator();
     }
 
     public function getToken()
@@ -28,8 +31,14 @@ class PortfolioController extends Controller
     /**
      * insertAccessLogs
      */
-    public function insertAccessLogs()
+    public function insertAccessLogs(Request $request)
     {
+        $validatationMessaeg = $this->CustomValidator->validate($request, 'InsertAccessLogsForm');
+
+        if (!($validatationMessaeg === false)) {
+            return $validatationMessaeg;
+        }
+
         return $this->ResponseComponent->success();
     }
 

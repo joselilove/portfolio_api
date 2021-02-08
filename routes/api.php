@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PortfolioController;
+use App\Http\Controllers\UsersController;
 use App\Http\Controllers\Component\ResponsesComponent;
 
 /*
@@ -27,8 +28,20 @@ Route::prefix('portfolio')->group(function () {
     Route::post('/access/logs', [PortfolioController::class, 'insertAccessLogs']);
     // View access logs
     Route::get('/access/logs', [PortfolioController::class, 'getAccessLogs']);
-    Route::fallback(function () {
-        $this->ResponseComponent = new ResponsesComponent();
-        return $this->ResponseComponent->notFound();
-    });
+});
+
+Route::prefix('users')->group(function () {
+    // Login
+    Route::post('/login', [UsersController::class, 'login']);
+    // Logout
+    Route::post('/logout', [UsersController::class, 'logout']);
+    // Register
+    Route::post('/register', [UsersController::class, 'register']);
+    // Update User
+    Route::post('/update', [UsersController::class, 'updateUser']);
+});
+
+Route::fallback(function () {
+    $this->ResponseComponent = new ResponsesComponent();
+    return $this->ResponseComponent->notFound();
 });

@@ -32,6 +32,22 @@ class ResponsesComponent
     }
 
     /**
+     * validationError
+     */
+    public function validationError($entity)
+    {
+        $status = 400;
+        $body = [
+            'status_code' => $status,
+            'message_id' => 'INVALID_PARAMETERS',
+            'message' => 'Invalid Parameters',
+            'data' => $entity
+        ];
+
+        return $this->_setResponseBody($body, $status);
+    }
+
+    /**
      * authenticationFailed
      */
     public function authenticationFailed()

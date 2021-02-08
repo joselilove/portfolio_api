@@ -10,10 +10,15 @@ use App\Http\Controllers\Component\ResponsesComponent;
 class ApiToken
 {
     protected $ResponseComponent;
+    protected $allowApiWithoutToken;
 
     public function __construct()
     {
         $this->ResponseComponent = new ResponsesComponent();
+        $this->allowApiWithoutToken = [
+            'api/portfolio/token',
+            'api/users/login'
+        ];
     }
 
     /**
@@ -26,8 +31,8 @@ class ApiToken
     public function handle(Request $request, Closure $next)
     {
         $response = $next($request);
-        // If getting a new token
-        if ($request->isMethod('get') &&  request()->route()->uri == 'api/portfolio/token') {
+        // Identify if API dont need token
+        if (in_array(request()->route()->uri, $this->allowApiWithoutToken)) {
             return $response;
         }
         // return error 401 if invalid token

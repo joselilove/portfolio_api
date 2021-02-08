@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Component;
 
+use Illuminate\Support\Facades\Log;
+use Illuminate\Routing\Route;
+
 /**
  * ResponsesComponent
  * This is used for giving response
@@ -27,6 +30,13 @@ class ResponsesComponent
                 'Access-Control-Max-Age' => '300',
                 'Pragma' => 'no-cache'
             ]);
+
+        $logMessages = [
+            'URL' => request()->route()->uri,
+            'response' => json_encode($body, JSON_UNESCAPED_UNICODE)
+        ];
+
+        Log::debug($logMessages);
 
         return $response;
     }

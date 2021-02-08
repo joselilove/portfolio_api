@@ -1,0 +1,25 @@
+version: "2"
+services:
+  portfolio-api-app:
+    container_name: portfolio-api-app
+    hostname: portfolio-api-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "7867:80"
+    volumes:
+      - .:/www
+    depends_on:
+      - portfolio-api-mysql
+
+  portfolio-api-mysql:
+    build:
+      context: mysql
+    container_name: portfolio-api-mysql
+    hostname: portfolio-api-mysql
+    ports:
+      - "7866:3306"
+    environment:
+      - MYSQL_DATABASE=portfolio-api
+      - MYSQL_ROOT_PASSWORD=portfolio-api

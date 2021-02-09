@@ -75,7 +75,7 @@ class ResponsesComponent
     /**
      * success
      */
-    public function success(array $entity = [])
+    public function success($entity = [])
     {
         $status = 200;
 
@@ -101,6 +101,25 @@ class ResponsesComponent
             'status_code' => $status,
             'message_id' => 'NOT_FOUND',
             'message' => 'Not Found'
+        ];
+
+        return $this->_setResponseBody($body, $status);
+    }
+
+    /**
+     * insertAccessLogsFailed
+     *
+     * @param string $msgId
+     * @return void
+     */
+    public function insertAccessLogsFailed($msgId)
+    {
+        $status = 409;
+
+        $body = [
+            'status_code' => $status,
+            'message_id' => $msgId,
+            'message' => config('const.MESSAGE.' . $msgId)
         ];
 
         return $this->_setResponseBody($body, $status);

@@ -6,11 +6,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Component\ResponsesComponent;
 use App\Http\Form\CustomValidator;
+use App\Models\AccessLog;
 
 class PortfolioController extends Controller
 {
     protected $ResponseComponent;
     protected $CustomValidator;
+    protected $AccessLog;
 
     /**
      * __construct
@@ -19,6 +21,7 @@ class PortfolioController extends Controller
     {
         $this->ResponseComponent = new ResponsesComponent();
         $this->CustomValidator = new CustomValidator();
+        $this->AccessLog = new AccessLog();
     }
 
     public function getToken()
@@ -33,10 +36,14 @@ class PortfolioController extends Controller
      */
     public function insertAccessLogs(Request $request)
     {
-        $validatationMessaeg = $this->CustomValidator->validate($request, 'InsertAccessLogsForm');
+        $validationMessage = $this->CustomValidator->validate($request, 'InsertAccessLogsForm');
 
-        if (!($validatationMessaeg === false)) {
-            return $validatationMessaeg;
+        if (!($validationMessage === false)) {
+            return $validationMessage;
+        }
+
+        if ($this->AccessLog->insertAccessLogs()) {
+            return $this->ResponseComponent->insertAccessLogsFailed('INSERT_ACCESS_LOGS_FAILED');
         }
 
         return $this->ResponseComponent->success();
@@ -45,21 +52,20 @@ class PortfolioController extends Controller
     /**
      * getAccessLogs
      */
-    public function getAccessLogs()
+    public function getAccessLogs(Request $request)
     {
-        $data = [
-            [
-                'address' => $_SERVER['REMOTE_ADDR'],
-                'machine_name' => gethostname(),
-                'time' => 'Dec 12, 2020'
-            ],
-            [
-                'address' => $_SERVER['REMOTE_ADDR'],
-                'machine_name' => gethostname(),
-                'time' => 'Dec 12, 2020'
-            ]
-        ];
+        $validationMessage = $this->CustomValidator->validate($request, 'GetAccessLogsForm');
 
-        return $this->ResponseComponent->success($data);
+        if (!($validationMessage === false)) {
+            return $validationMessage;
+        }
+
+        $accessLogData = $this->AccessLog->getAccessLogs();
+
+        if (empty($accessLogData)) {
+            return $this->ResponseComponent->notFound();
+        }
+
+        return $this->ResponseComponent->success($accessLogData);
     }
 }

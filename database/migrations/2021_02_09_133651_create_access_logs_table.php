@@ -22,6 +22,7 @@ class CreateAccessLogsTable extends Migration
                 $table->string('machine_name');
                 $table->string('machine_address');
                 $table->timestamp('created_at')->nullable();
+                $table->timestamp('updated_at')->nullable();
             }
         );
     }

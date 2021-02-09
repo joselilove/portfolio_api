@@ -5,11 +5,11 @@ namespace App\Http\Form;
 use Illuminate\Support\Facades\Validator;
 
 /**
- * InsertAccessLogsForm
+ * GetAccessLogsForm
  * 
- * Validate InsertAccessLogs API inputs
+ * Validate GetAccessLogsForm API inputs
  */
-class InsertAccessLogsForm
+class GetAccessLogsForm
 {
     /**
      * Validate input
@@ -22,6 +22,7 @@ class InsertAccessLogsForm
     {
         $validator = Validator::make($request->all(), [
             // Validation
+            'limit' => ['required', 'integer']
         ]);
         // Return Message
         if ($validator->fails()) {

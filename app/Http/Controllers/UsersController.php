@@ -28,10 +28,10 @@ class UsersController extends Controller
     {
         $data['token'] = Hash::make(config('const.API-TOKEN'));
 
-        $validatationMessaeg = $this->CustomValidator->validate($request, 'RegisterUserForm');
+        $validationMessage = $this->CustomValidator->validate($request, 'RegisterUserForm');
 
-        if (!($validatationMessaeg === false)) {
-            return $validatationMessaeg;
+        if (!($validationMessage === false)) {
+            return $validationMessage;
         }
 
         return $this->ResponseComponent->success($data);
@@ -42,10 +42,10 @@ class UsersController extends Controller
      */
     public function register(Request $request)
     {
-        $validatationMessaeg = $this->CustomValidator->validate($request, 'RegisterUserForm');
+        $validationMessage = $this->CustomValidator->validate($request, 'RegisterUserForm');
 
-        if (!($validatationMessaeg === false)) {
-            return $validatationMessaeg;
+        if (!($validationMessage === false)) {
+            return $validationMessage;
         }
 
         return $this->ResponseComponent->success();
@@ -64,10 +64,10 @@ class UsersController extends Controller
      */
     public function updateUser(Request $request)
     {
-        $validatationMessaeg = $this->CustomValidator->validate($request, 'UpdateUserForm');
+        $validationMessage = $this->CustomValidator->validate($request, 'UpdateUserForm');
 
-        if (!($validatationMessaeg === false)) {
-            return $validatationMessaeg;
+        if (!($validationMessage === false)) {
+            return $validationMessage;
         }
 
         return $this->ResponseComponent->success();
